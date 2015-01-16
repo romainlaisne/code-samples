@@ -79,35 +79,7 @@
                 <h1>REMAKES</h1>
                 <div id="remakes" style="width:100%;height:200px;"></div>
             </div>
-             <!--
-             <div style="width:100%; margin-top: 5px">
-                             <h1>PACKED</h1>
-                             <div id="packed" style="width:100%;height:200px;"></div>
-                         </div>-->
-             
-            
-            <!--<div class="options-panel">
-                <h2>Demonstrates:</h2>
-                <ul>
-                    <li>
-                        adding basic keyboard navigation and editing
-                    </li>
-                    <li>
-                        custom editors and validators
-                    </li>
-                    <li>
-                        auto-edit settings
-                    </li>
-                </ul>
-                <h2>Options:</h2>
-                <button onclick="grid.setOptions({autoEdit:true})">
-                    Auto-edit ON
-                </button>
-                &nbsp;
-                <button onclick="grid.setOptions({autoEdit:false})">
-                    Auto-edit OFF
-                </button>
-            </div>-->
+
         </div>
         <script src="slickgrid/lib/jquery-1.7.min.js"></script>
         <script src="slickgrid/lib/jquery-ui-1.8.16.custom.min.js"></script>
@@ -592,10 +564,7 @@
             $("#refreshInfo").css("visibility","hidden");
              
             var data = [];
-            
-            //**TEST
-            //data[0] = { id: "1", order_nb: "222", sheet_nb: "1", planned_start_date: "00-00-0000", planned_end_date: "00-00-0000", production_start: "00-00-0000", production_end: "00-00-0000", last_update: "00-00-0000", layup: "", press: "fail", saw: "", qc: "Pass", userid: "2" }; 
-            
+
             <?php echo $data; ?>
 				var reruns = [];
             <?php echo $reruns; ?>
@@ -695,16 +664,10 @@
 				var editedRows = {}
 				grid.onAddNewRow.subscribe(function(e, args) {
 
-					//var item = {"num": data.length, "id": "new_" + (Math.round(Math.random() * 10000)), "title": "New task", "duration": "1 day", "percentComplete": 0, "start": "01/01/2009", "finish": "01/01/2009", "effortDriven": false};
-					//$.extend(item, args.item);
-
 					var item = args.item;
 					//**editedRows can be send to the server PHP for parsing
 					editedRows[item.id] = item;
-					//alert ("New row");
-					//console.log(item);
 					sendData(item);
-					//alert(item);
 					grid.invalidateRow(data.length);
 					data.push(item);
 					grid.updateRowCount();
@@ -715,76 +678,24 @@
 					var item = args.item;
 					//**editedRows can be send to the server PHP for parsing
 					editedRows[item.id] = item;
-					alert(item.order_nb);
-					//console.log(item);
 					updateData(item);
-					//alert(item);
-					//grid.invalidateRow(data.length);
-					//data.push(item);
-					//grid.updateRowCount();
-
 					grid.render();
 				});
 
-				/*
-				grid.onDblClick.subscribe(function(e, args){
-				var cell = grid.getCellFromEvent(e);
-				//alert (dump(cell))
-				console.log(cell.data);
-				var row = cell.row;
-				//alert (row)
-				var column = grid.getColumns()[cell.cell]; // object containing name, field, id, etc
-				//alert (column)
-				});*/
 
-				//grid.onSelectedRowsChanged.subscribe(function() { console.log(grid.getSelectedRows('order_nb')); });
-
-				//grid.onCellChange = function(currentRow, currentCell, item) {
-				/*grid.onCellChange = function (row, col, dataRow) {
-				 console.log(row)
-				 }   */
-
-				/*grid.onClick.subscribe(function(e, args) {
-				 //alert(currentRow + ":" + currentCell + "> key=" + item['order_nb']);
-				 //alert("test");
-				 console.log(grid.getSelectedRows());
-				 console.log(e);
-				 console.log(args);
-				 //console.log(grid.getData());
-				 //console.log(grid.getData());
-				 //alert (grid.getData());
-				 mydata = grid.SelectedRow;
-				 //alert("test" + mydata);
-				 //$("input[name='data']").val($.JSON.encode(data));
-				 $("input[name='data']").val(mydata);
-
-				 //alert(grid.getCellFromEvent(e).val);
-				 //alert(data.value);
-				 });*/
 				$("form").submit(function() {
-					alert("test" + mydata);
 					$("input[name='data']").val("mydata");
 
 				});
 
 				function sendData(theData) {
 					//generate the parameter for the php script
-					//var data = 'page=' + document.location.hash.replace(/^.*#/, '');
 					$.ajax({
 						url : "save_data.php",
 						type : "POST",
 						data : theData,
 						cache : false,
 						success : function(html) {
-							//alert ("Success insert");
-							//hide the progress bar
-							//$('#loading').hide();
-
-							//add the content retrieved from ajax and put it in the #content div
-							//$('#content').html(html);
-
-							//display the body with fadeIn transition
-							//$('#content').fadeIn('slow');
 							grid.render();
 							location.reload(true);
 						},
@@ -816,7 +727,6 @@
 				}
 
 				$.fn.refreshGrid =function(){
-				alert ("refresh");
 
 				$.ajax({
 				url: "buildSourceData.php",
@@ -824,43 +734,13 @@
 				data: null,
 				cache: false,
 				success: function (data) {
-				//alert (data);
-				//console.log(data);
-				//hide the progress bar
-				//$('#loading').hide();
 
-				//add the content retrieved from ajax and put it in the #content div
-				//$('#content').html(html);
-
-				//display the body with fadeIn transition
-				//$('#content').fadeIn('slow');
-				//alert (grid);
-
-				// data.push(hh);
-				// grid.updateRowCount();
-
-				// grid.setData(hh);
-				// grid.render();
 				var dd=[];
-				//dd.push(data);
-				//dd=data;
-
-				//data.push(dd);
-				//grid.updateRowCount();
-
-				alert ("data="+typeof(data));
 
 				dd[0] = { id: "1", order_nb: "222", sheet_nb: "1", planned_start_date: "00-00-0000", planned_end_date: "00-00-0000", production_start: "00-00-0000", production_end: "00-00-0000", last_update: "00-00-0000", layup: "", press: "fail", saw: "", qc: "Pass", userid: "2" };
 				dd[1] = { id: "1", order_nb: "222", sheet_nb: "1", planned_start_date: "00-00-0000", planned_end_date: "00-00-0000", production_start: "00-00-0000", production_end: "00-00-0000", last_update: "00-00-0000", layup: "", press: "fail", saw: "", qc: "Pass", userid: "2" };
 
-				//ddjson=json_encode(dd);
-				//ddjson=jQuery.parseJSON(dd);
-
-				alert (dd);
 				grid.setData(dd);
-				//data2.push(data);
-				//alert (data2);
-				//grid = new Slick.Grid("#myGrid", data, columns, options);
 				grid.render();
 				}
 				});
