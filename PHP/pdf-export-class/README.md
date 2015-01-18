@@ -1,0 +1,1 @@
+This class use TFPDF and PDF merger to build a custom pdf with complex layout. 
