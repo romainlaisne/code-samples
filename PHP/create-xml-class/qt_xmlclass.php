@@ -33,21 +33,10 @@ class CreateXml {
 	 * 
 	 */
 
-    //
-    //var $returnoutput = "";
-    //var $var = "";
 
     public $premiumfinishesarr = array();
     public $sheetpanels_arr = array();
     public $sheetuid_value = 0;
-
-    //var $getlayers_arr = array();
-
-    //public function build_simplefabxml ($in_quote) {
-    //
-    //	$this->var = "";
-    //
-    //}
 
     public function build_xml($in_xml, $in_quote, $in_tempnum) {
 		
@@ -2395,8 +2384,7 @@ class CreateXml {
                             $panel -> appendChild($panelmatdirdesc);
 
                             //TODO put fabrication such as line bend, holes, edge finishes, etc. here?
-                            //if($DEVSERVER){
-                            //put in "other fabrication"
+
                             $panelid_arr = explode(":", $panelvalues['panelid']);
                             $quoteprodid = $panelid_arr[0];
                             $panel_num = intval($panelid_arr[1]);
@@ -2406,9 +2394,7 @@ class CreateXml {
                             $panel -> appendChild($panelfab);
 
                             //get fabrication for the given panel
-                            //$ofquery = "SELECT panel_id, fab_category, fab_detail_1, fab_detail_2 FROM qt_fab_products WHERE quoteproduct_id='$quoteprodid'
-                            //		AND active='1' ORDER BY panel_id";//AND fab_category='otherfab'
-                            $ofquery = "SELECT * FROM qt_fab_products WHERE quoteproduct_id ='$quoteprodid' AND active = '1' AND 
+                       		$ofquery = "SELECT * FROM qt_fab_products WHERE quoteproduct_id ='$quoteprodid' AND active = '1' AND 
 							(fab_category = 'otherfab' OR panel_num <='$panel_num') ";
                             //ORDER BY panel_num ASC //$quoteproduct[qty]
                             $q_fab = db_query($ofquery);
@@ -2478,9 +2464,7 @@ class CreateXml {
 
                                                     $fabdetails -> get_fab_price($quoteprodid, $quoteproduct['pline'], $r_quote['catalog_id'], $panelvalues['length'], $panelvalues['width'], $quoteproduct['Gauge'], $r_fab['fab_category'], $r_fab['fab_detail_1'], $r_fab['fab_detail_2'], $r_fab['fab_detail_3'], $r_fab['fab_detail_4'], $r_fab['fab_detail_5'], $r_fab['fab_detail_6'], $r_fab['fab_detail_7'], $r_fab['fab_detail_8'], $r_fab['id']);
 
-                                                    //get correct price according to currency
                                                     $fabdetails -> price = $fabdetails -> price * $currencyconvert;
-                                                    //$unitprice->unitprice = $unitprice->unitprice * $currencyconvert;
                                                     $fabdetails -> price = number_format($fabdetails -> price, 2);
                                                     $fabdetails -> price = str_replace(",", "", $fabdetails -> price);
 
@@ -2490,26 +2474,21 @@ class CreateXml {
                                                     $panelfab -> appendChild($fab);
 
                                                     $fabid = $doc -> createElement("fabID");
-                                                    //
+                                                    
                                                     $fabid -> appendChild($doc -> createTextNode($r_fab['id']));
-                                                    //$r_fab['panel_num']
                                                     $fab -> appendChild($fabid);
 
                                                     $fabtype = $doc -> createElement("fabType");
-                                                    //$r_fab['fab_category']."ID"
                                                     $fabtype -> appendChild($doc -> createTextNode($r_fab['fab_category']));
-                                                    //." $ofquery"
                                                     $fab -> appendChild($fabtype);
 
                                                     $fabtext = $doc -> createElement("fabText");
-                                                    //$r_fab['fab_category'].
                                                     $fabtext -> appendChild($doc -> createTextNode($descriptionfab));
                                                     $fab -> appendChild($fabtext);
 
                                                     $fabvalue = $doc -> createElement("fabValue");
-                                                    //$r_fab['fab_category'].
                                                     $fabvalue -> appendChild($doc -> createTextNode($fabdetails -> price));
-                                                    //
+                                                    
                                                     $fab -> appendChild($fabvalue);
 
                                                     //add custom notes
@@ -2633,16 +2612,12 @@ class CreateXml {
 
             foreach ($uniquedescr_arr as $desckey => $descrval) {
 
-                //if($haspanels == true){ continue; }//skip sheets that are full sized
-
                 $cutlistgrp = $doc -> createElement("cutlist");
                 $cutlistgrp -> setAttribute('id', $desckey);
-                //$quoteproduct['sheetUID']
                 $cutlist -> appendChild($cutlistgrp);
 
                 $cutdescr = $doc -> createElement("description");
                 $cutdescr -> appendChild($doc -> createTextNode($descrval));
-                //$cutdetails_arr['C1']['description'] //." and ".$cutdetails_arr[$cut_id]['description']
                 $cutlistgrp -> appendChild($cutdescr);
 
                 foreach ($uniquecuts_arr as $cutkey => $cut_id) {
@@ -2747,7 +2722,6 @@ class CreateXml {
                 $currencyconvert = $r_cu['ex_val'];
                 $currsymbol = $r_cu['symbol'];
             }
-			//$firephp->warn("CALL get_fabrication FROM qt_xmlclass");
             $get_fabrication = get_fabrication($r_quote['catalog_id'], $currencyconvert, $currsymbol,$_SESSION['lang']);
 
             $fabLeadTimes = $doc -> createElement("fabLeadTimes");
@@ -2840,20 +2814,6 @@ class CreateXml {
             $hMin = $doc -> createElement("minutes");
             $hMin -> appendChild($doc -> createTextNode(round($get_fabrication['leadtimes']['handtools'])));
             $handtools -> appendChild($hMin);
-
-            //		round($get_fabrication['leadtimes']['cnch'])
-            //		round($get_fabrication['leadtimes']['ovenh'])
-            //		round($get_fabrication['leadtimes']['vacth'])
-            //		round($get_fabrication['leadtimes']['linebendh'])
-            //		round($get_fabrication['leadtimes']['sawh'])
-            //		round($get_fabrication['leadtimes']['freesh'])
-            //		round($get_fabrication['leadtimes']['handtools'])
-            //		round($get_fabrication['leadtimes']['total_machine'])//not used
-
-            //		round($get_fabrication['leadtimes']['cncf_manmin'])//not used
-            //		round($get_fabrication['leadtimes']['complf_manmin'])//not used
-            //		round($get_fabrication['leadtimes']['litef_manmin'])// not used
-            //		round($get_fabrication['leadtimes']['total_manmin'])
 
             //now put all fabrication notes into easy to use elements
             $sapFabrication = $doc -> createElement("sapFabrication");
@@ -2957,11 +2917,7 @@ class CreateXml {
             $doc -> save($absolutePath . "icepacks/" . $in_tempnum . "SimpleFab.xml");
             //my3form_europe/icepacks/ it is currently placed in public_html
         }
-        
-        //**Output data for debuging
-        /*$dis=$doc->saveXML();
-        $dis="<pre>".print_r($dis,1)."</pre>";
-        $firephp->warn($dis, "XML $in_xml");*/
+
         
     }
 
@@ -2987,69 +2943,7 @@ class CreateXml {
         return $pid_code;
     }
     
-    
-    
+}
 
-    //	$add_uvback = array("gauge" => $r_uvb['extra'], "description" => $r_uvb['description'],
-    //	"partNumber" => $r_uvb['partnumber'], "quantity" => $r_uvb['qty'] );
-    //
-    //	$this->add_xmllayers($add_uvback, $uvpetg);
-    //
-    //	private function add_xmllayers ($in_buildarr, $in_layer){
-    //
-    //		foreach($in_buildarr as $name => $value){
-    //			$addthis= $doc->createElement( $name );
-    //			$addthis->appendChild(  $doc->createTextNode( $value )  );
-    //			$in_layer->appendChild( $addthis );
-    //		}
-    //	}
 
-}//End creatXML
-
-/*
- $employees = array();
- $employees [] = array(
- 'name' => 'Albert',
- 'age' => '34',
- 'salary' => "$10000"
- );
- $employees [] = array(
- 'name' => 'Claud',
- 'age' => '20',
- 'salary' => "$2000"
- );
-
- $doc = new DOMDocument();
- $doc->formatOutput = true;
-
- $r = $doc->createElement( "sheets" );//employees
- $doc->appendChild( $r );
-
- foreach( $employees as $employee )
- {
- $b = $doc->createElement( "material" );//employee
-
- $name = $doc->createElement( "sheet description" );//name
- $name->appendChild(	 $doc->createTextNode( $employee['name'] )	  );
- $b->appendChild( $name );
-
- $age = $doc->createElement( "age" );
- $age->appendChild(
- $doc->createTextNode( $employee['age'] )
- );
- $b->appendChild( $age );
-
- $salary = $doc->createElement( "salary" );
- $salary->appendChild(
- $doc->createTextNode( $employee['salary'] )
- );
- $b->appendChild( $salary );
-
- $r->appendChild( $b );
- }
-
- echo $doc->saveXML();
- $doc->save("ICEpack.xml") //my3form_europe/icepacks/ it is currently placed in public_html
-
- */
 ?>
