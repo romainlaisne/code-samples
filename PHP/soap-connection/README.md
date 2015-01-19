@@ -1,0 +1,1 @@
+A sample of webservice implemented used the SOAP protocol.
