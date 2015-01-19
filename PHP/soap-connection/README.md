@@ -1,1 +1,1 @@
-An example of Webservice usage used the SOAP protocol.
+An example of Webservice usage with the SOAP protocol.

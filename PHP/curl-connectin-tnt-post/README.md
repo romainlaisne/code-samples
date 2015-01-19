@@ -1,1 +1,1 @@
-An example of Webservice usage (TNT post) using CURL.
+An example of Webservice usage (TNT post) with CURL.
