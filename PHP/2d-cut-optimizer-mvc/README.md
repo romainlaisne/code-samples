@@ -1,5 +1,5 @@
 
-### Note : This project is not finalized. Please check [cut-api.com](cut-api.com) if you need a cut optimization solution. cut-api.com offers an API with performant cut optimization algorithm which you can easily setup.
+### Note : This project is not finalized. Please check [cut-api.com](cut-api.com) if you need a cut optimization solution. cut-api.com offers an API with performant cut optimization algorithm you can easily setup.
 
 
 This is a sample of code build with the YII framework. It is an advanced 2D cut optimizer (best fitting multiple pieces on a panel to optimize the cut with a saw).
