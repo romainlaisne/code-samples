@@ -1,4 +1,9 @@
+Please check [cut-api.com](cut-api.com), the Cloud 2D cut optimization solution.
+
+
 This is a sample of code build with the YII framework. It is an advanced 2D cut optimizer (best fitting multiple pieces on a panel to optimize the cut with a saw).
+
+This project is not finalized.
 
 The main algorithm is in the file controllers/OptimizerController.php.
 
